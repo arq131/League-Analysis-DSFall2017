@@ -2,14 +2,30 @@
 import json, requests
 import pprint  
 import pandas as pd 
+import matlibplot as ml
 from dataUtils import dataUtils
 
 def main():
     utils = dataUtils('matches1.json')
     averCS = []
+    seasonTier = []
+    player = utils.get_participants(1, 3)
+    pp = pprint.PrettyPrinter()
+    #pp.pprint(player.get('stats').keys())
+    #pp.pprint(player.get('highestAchievedSeasonTier'))
+    #print(utils.get_player_stats(player, 'rank'))
+    
+    
     for players in utils.get_participants(1):
         stats = utils.get_player_stats(players)
+        seasonTier.append(players.get('highestAchievedSeasonTier'))
         averCS.append(stats.get('totalMinionsKilled'))
+    seriesCS = pd.Series(averCS)
+    seriesTier = pd.Series(seasonTier)
+    print(seriesTier)
+    print(seriesCS.mean())
+
+    
     
 
 

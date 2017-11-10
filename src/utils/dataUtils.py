@@ -20,6 +20,7 @@ class dataUtils:
     """
     def get_all_matches(self):
         return self.allMatches
+        
     """
         Return the match information for the matchID for the file.
         If the id is out of range, return nothing.
@@ -44,5 +45,12 @@ class dataUtils:
     
         return match.get('participants')
 
-    def get_player_stats(self, player):
+    """
+        Get all of the player stats for the match. 
+        If stat is defined, then return the specific stat for that game. 
+    """
+    def get_player_stats(self, player, stat=''):
+        if stat != '':
+            playerStats = player.get('stats')
+            return playerStats(stat)
         return player.get('stats')
