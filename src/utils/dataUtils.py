@@ -52,5 +52,5 @@ class dataUtils:
     def get_player_stats(self, player, stat=''):
         if stat != '':
             playerStats = player.get('stats')
-            return playerStats(stat)
+            return playerStats.get(stat)
         return player.get('stats')
