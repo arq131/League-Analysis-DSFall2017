@@ -1,9 +1,23 @@
 # League Python data collector created by Danny Nguyen
 import json, requests
+import pprint  
+import pandas as pd 
+from dataUtils import dataUtils
 
 def main():
-    get_all_matches('matches1.json')
+    utils = dataUtils('matches1.json')
+    averCS = []
+    for players in utils.get_participants(1):
+        stats = utils.get_player_stats(players)
+        averCS.append(stats.get('totalMinionsKilled'))
     
+
+
+
+if __name__ == '__main__':
+    main()
+
+"""   Commented out code since we might not need it for analysis
 # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Get information about a certain summoner
 #
@@ -27,18 +41,5 @@ def get_summoner(name):
         return data
     except Exception as e:
         print("Unable to read json data. ", e)
+"""
 
-# # # # # # # # # # # # # # # # # # # # # # # # # #
-# Get all of the matches from a locally stored file.
-#
-# Params: 
-#   filename - The name of the file to get the data from
-# Returns:
-#   Dictionary of all of the matches in the provided file.
-def get_all_matches(filename):
-    with open('../data/' + filename) as file:
-        data = json.load(file)
-        return data
-
-if __name__ == '__main__':
-    main()
