@@ -60,10 +60,9 @@ def getNew(subName, folderName):
     # for comment in subreddit_comment:
     #     print comment
     #     url = "https://reddit.com" + comment.permalink
-    #     data = {'user-agent': 'archive by /u/healdb'}
+    #     data = {'user-agent': 'archive by /u/DataScienceBot'}
     #     # manually grabbing this file is much faster than loading the individual json files of every single comment, as this json provides all of it
     #     response = requests.get(url + '.json', headers=data)
-    #     # Create a folder called dogecoinArchive before running the script
     #     filename = folderName + "/" + comment.name
     #     obj = open(filename, 'w')
     #     obj.write(response.text)
@@ -73,11 +72,10 @@ def getNew(subName, folderName):
         print post
         url1 = "https://reddit.com" + post.permalink
         # pprint(vars(post))
-        data = {'user-agent': 'archive by /u/healdb'}
+        data = {'user-agent': 'archive by /u/DataScienceBot'}
         # manually grabbing this file is much faster than loading the individual json files of every single comment, as this json provides all of it
         if submission.id not in already_done:
             response = requests.get(url1 + '.json', headers=data)
-            # Create a folder called dogecoinArchive before running the script
             filename = folderName + "/" + post.name
             obj = open(filename, 'w')
             obj.write(response.text)
