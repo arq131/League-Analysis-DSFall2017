@@ -15,9 +15,14 @@ def main():
 
     ranks = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'UNRANKED']
 
-    stats = {'BRONZE': {'CS':[], 'AMOUNT': 0}, 'SILVER': {'CS':[], 'AMOUNT': 0}, 'GOLD': {'CS':[], 'AMOUNT': 0},
-             'PLATINUM': {'CS':[], 'AMOUNT': 0}, 'DIAMOND': {'CS':[], 'AMOUNT': 0}, 'MASTER': {'CS':[], 'AMOUNT': 0},
-             'UNRANKED': {'CS':[], 'AMOUNT': 0} }
+    stats = {'BRONZE':   {'CS':[], 'AMOUNT': 0, 'KILLS': [], 'DEATHS': [], 'ASSISTS': []},
+             'SILVER':   {'CS':[], 'AMOUNT': 0, 'KILLS': [], 'DEATHS': [], 'ASSISTS': []},
+             'GOLD':     {'CS':[], 'AMOUNT': 0, 'KILLS': [], 'DEATHS': [], 'ASSISTS': []},
+             'PLATINUM': {'CS':[], 'AMOUNT': 0, 'KILLS': [], 'DEATHS': [], 'ASSISTS': []},
+             'DIAMOND':  {'CS':[], 'AMOUNT': 0, 'KILLS': [], 'DEATHS': [], 'ASSISTS': []},
+             'MASTER':   {'CS':[], 'AMOUNT': 0, 'KILLS': [], 'DEATHS': [], 'ASSISTS': []},
+             'UNRANKED': {'CS':[], 'AMOUNT': 0, 'KILLS': [], 'DEATHS': [], 'ASSISTS': []}
+            }
     
     damageStats = {'BRONZE': [], 'SILVER': [], 'GOLD': [], 'PLATINUM': [], 'DIAMOND': [], 'MASTER': [], 'UNRANKED': []}
     
@@ -28,8 +33,8 @@ def main():
 
     for file in files:
         utils = dataUtils(file)
-        for matchID in range(0, 99): # For each match 
-            for playerID in range(1, 10): # For each player in the match
+        for matchID in range(0, 100): # For each match 
+            for playerID in range(0, 10): # For each player in the match
                 player = utils.get_participants(matchID, playerID)
                 if player.get('championId') in supportId:
                     supportBoolean = True;
@@ -37,8 +42,19 @@ def main():
                 if (supportBoolean == False):
                     stats[tier]['CS'].append(utils.get_player_stats(player, stat='totalMinionsKilled'))
                     damageStats[tier].append(utils.get_player_stats(player, stat='totalDamageDealtToChampions'))
+                    stats[tier]['KILLS'].append(utils.get_player_stats(player, stat='kills'))
+                    stats[tier]['DEATHS'].append(utils.get_player_stats(player, stat='deaths'))
+                    stats[tier]['ASSISTS'].append(utils.get_player_stats(player, stat='assists'))
                 stats[tier]['AMOUNT'] += 1
                 supportBoolean = False
+
+    print('Distribution')
+    total = 0;
+    for rank in ranks:
+        percent = stats[rank]['AMOUNT'] / 10000.0 
+        print('{}: {} ({}%)'.format(rank, stats[rank]['AMOUNT'], round(percent * 100, 5)))
+        total += stats[rank]['AMOUNT']
+    print(total)
 
     print('Damage done to champions by Rank')
     for rank in ranks:
@@ -49,6 +65,15 @@ def main():
     for rank in ranks:
         cs = pd.Series(stats[rank]['CS'])
         prettyP(rank, cs)
+
+    ''' Work in progress
+    print('K/D/A')
+    for rank in ranks:
+        k = pd.Series(stats[tier]['KILLS'])
+        d = pd.Series(stats[tier]['DEATHS'])
+        a = pd.Series(stats[tier]['ASSISTS'])
+        prettyP(rank, k)
+    '''
 
 if __name__ == '__main__':
     main()
