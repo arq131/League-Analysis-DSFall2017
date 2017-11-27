@@ -83,7 +83,7 @@ def main():
         plt.legend(loc='upper right')
         x += 1
 
-    plt.show()
+    #plt.show()
     
     print('Creep Scores')
     for rank in ranks:
@@ -104,14 +104,19 @@ def main():
         prettyP(rank, goldDelta2)
         prettyP(rank, goldDelta3)
 
-    ''' Work in progress
+    
     print('K/D/A')
     for rank in ranks:
-        k = pd.Series(stats[tier]['KILLS'])
-        d = pd.Series(stats[tier]['DEATHS'])
-        a = pd.Series(stats[tier]['ASSISTS'])
-        prettyP(rank, k)
-    '''
+        k = pd.Series(stats[rank]['KILLS'])
+        d = pd.Series(stats[rank]['DEATHS'])
+        a = pd.Series(stats[rank]['ASSISTS'])
+        print('{}:\n\tMean: {}/{}/{}\n\tMedian: {}/{}/{}\n\tStd. Dev: {}/{}/{}\n\tMin: {}/{}/{}\n\tMax: {}/{}/{}'.format(
+                rank, round(k.mean(), 2), round(d.mean(), 2), round(a.mean(), 2), 
+                      round(k.median(), 2), round(d.median(), 2), round(a.median(), 2),
+                      round(k.std(), 2), round(d.std(), 2), round(a.median(), 2),
+                      round(k.min(), 2), round(d.min(), 2), round(a.min(), 2),
+                      round(k.max(), 2), round(k.max(), 2), round (a.max(), 2)))
+    
 
 
 if __name__ == '__main__':
