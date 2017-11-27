@@ -59,7 +59,7 @@ class dataUtils:
         Get all of the player timeline for the match.
         if Stat is defined, then return the specific timeline for that game
     """
-    def get_player_timeline(self, player, stat='')
+    def get_player_timeline(self, player, stat=''):
         if stat != '':
             playerStats = player.get('timeline')
             return playerStats.get(stat)

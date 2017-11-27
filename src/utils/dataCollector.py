@@ -4,6 +4,8 @@ import pprint
 import pandas as pd 
 import numpy as np
 from dataUtils import dataUtils
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 def prettyP(rank, stat):
     print('{}:\n\tMean: {}\n\tMedian: {}\n\tStd. Dev: {}\n\tMin: {}\n\tMax: {}'.format(rank, round(stat.mean(), 2), round(stat.median(), 2), 
@@ -25,33 +27,32 @@ def main():
             }
     
     damageStats = {'BRONZE': [], 'SILVER': [], 'GOLD': [], 'PLATINUM': [], 'DIAMOND': [], 'MASTER': [], 'UNRANKED': []}
-    
-    supportId = [12, 432, 53, 201, 40, 43, 89, 117, 25, 267, 497, 37, 16, 223, 44, 412, 26, 143]
-    
+
     pp = pprint.PrettyPrinter()
-    supportBoolean = False;
 
     for file in files:
         utils = dataUtils(file)
         for matchID in range(0, 100): # For each match 
             for playerID in range(0, 10): # For each player in the match
                 player = utils.get_participants(matchID, playerID)
-                if player.get('championId') in supportId:
-                    supportBoolean = True;
                 tier = player.get('highestAchievedSeasonTier')
-                if (supportBoolean == False):
+                if utils.get_player_timeline(player, stat='role') != 'DUO_SUPPORT' \
+                        and utils.get_player_stats(player, stat='totalDamageDealtToChampions') > 0:
                     stats[tier]['CS'].append(utils.get_player_stats(player, stat='totalMinionsKilled'))
                     damageStats[tier].append(utils.get_player_stats(player, stat='totalDamageDealtToChampions'))
                     stats[tier]['KILLS'].append(utils.get_player_stats(player, stat='kills'))
                     stats[tier]['DEATHS'].append(utils.get_player_stats(player, stat='deaths'))
                     stats[tier]['ASSISTS'].append(utils.get_player_stats(player, stat='assists'))
+                if utils.get_player_stats(player, stat='totalMinionsKilled') == 0:
+                    print(player)
                 stats[tier]['AMOUNT'] += 1
-                supportBoolean = False
+
+
 
     print('Distribution')
     total = 0;
     for rank in ranks:
-        percent = stats[rank]['AMOUNT'] / 10000.0 
+        percent = stats[rank]['AMOUNT'] / 10000.0
         print('{}: {} ({}%)'.format(rank, stats[rank]['AMOUNT'], round(percent * 100, 5)))
         total += stats[rank]['AMOUNT']
     print(total)
@@ -60,6 +61,9 @@ def main():
     for rank in ranks:
         dmg = pd.Series(damageStats[rank])
         prettyP(rank, dmg)
+        dmg.hist()
+    plt.show()
+
 
     print('Creep Scores')
     for rank in ranks:
