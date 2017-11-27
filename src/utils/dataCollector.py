@@ -5,7 +5,8 @@ import pandas as pd
 import numpy as np
 from dataUtils import dataUtils
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
+
+
 
 def prettyP(rank, stat):
     print('{}:\n\tMean: {}\n\tMedian: {}\n\tStd. Dev: {}\n\tMin: {}\n\tMax: {}'.format(rank, round(stat.mean(), 2), round(stat.median(), 2), 
@@ -43,8 +44,6 @@ def main():
                     stats[tier]['KILLS'].append(utils.get_player_stats(player, stat='kills'))
                     stats[tier]['DEATHS'].append(utils.get_player_stats(player, stat='deaths'))
                     stats[tier]['ASSISTS'].append(utils.get_player_stats(player, stat='assists'))
-                if utils.get_player_stats(player, stat='totalMinionsKilled') == 0:
-                    print(player)
                 stats[tier]['AMOUNT'] += 1
 
 
@@ -59,9 +58,11 @@ def main():
 
     print('Damage done to champions by Rank')
     for rank in ranks:
+        print(rank)
         dmg = pd.Series(damageStats[rank])
         prettyP(rank, dmg)
-        dmg.hist()
+        plt.hist(dmg, alpha = 0.2, label=rank)
+    plt.legend(loc='upper right')
     plt.show()
 
 
