@@ -55,14 +55,17 @@ def main():
         print('{}: {} ({}%)'.format(rank, stats[rank]['AMOUNT'], round(percent * 100, 5)))
         total += stats[rank]['AMOUNT']
     print(total)
-
+    x = 1
     print('Damage done to champions by Rank')
     for rank in ranks:
         print(rank)
         dmg = pd.Series(damageStats[rank])
         prettyP(rank, dmg)
+        plt.subplot(4, 2, x)
         plt.hist(dmg, alpha = 0.2, label=rank)
-    plt.legend(loc='upper right')
+        plt.legend(loc='upper right')
+        x+=1
+    
     plt.show()
 
 
