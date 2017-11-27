@@ -60,7 +60,7 @@ class dataUtils:
         if Stat is defined, then return the specific timeline for that game
     """
     def get_player_timeline(self, player, stat='')
-    if stat != '':
-        playerStats = player.get('timeline')
-        return playerStats.get(stat)
-    return player.get('timeline')
+        if stat != '':
+            playerStats = player.get('timeline')
+            return playerStats.get(stat)
+        return player.get('timeline')
