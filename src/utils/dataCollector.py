@@ -75,26 +75,37 @@ def main():
     print(total)
     x = 1
     print('Damage done to champions by Rank')
+
     for rank in ranks:
         dmg = pd.Series(damageStats[rank])
         prettyP(rank, dmg)
-        plt.subplot(4, 2, x)
-        plt.hist(dmg, alpha=0.2, label=rank)
-        plt.legend(loc='upper right')
+        g = plt
+        g.subplot(4, 2, x)
+        g.hist(dmg, alpha=0.5, label=rank)
+        g.legend(loc='upper right')
         x += 1
 
-    #plt.show()
-    
+    g.show()
+
+    x = 1
     print('Creep Scores')
     for rank in ranks:
         cs = pd.Series(stats[rank]['CS'])
         prettyP(rank, cs)
+        c = plt
+        c.subplot(4, 2, x)
+        c.hist(cs, alpha=0.5, label=rank)
+        c.legend(loc='upper right')
+        x += 1
+
+    c.show()
 
     print('Gold Earned')
     for rank in ranks:
         gold = pd.Series(stats[rank]['GOLDEARNED'])
         prettyP(rank, gold)
 
+    x = 1
     print('Gold Deltas')
     for rank in ranks:
         goldDelta1 = pd.Series(stats[rank]['GOLDDELTA']['0-10'])
@@ -103,6 +114,13 @@ def main():
         prettyP(rank, goldDelta1)
         prettyP(rank, goldDelta2)
         prettyP(rank, goldDelta3)
+        r = plt
+        r.subplot(4, 2, x)
+        r.hist(goldDelta2, alpha=0.5, label=rank)
+        r.legend(loc='upper right')
+        x += 1
+
+    r.show()
 
     
     print('K/D/A')
